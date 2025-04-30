@@ -17,43 +17,46 @@ const Navbar: React.FC = () => {
                 <span className="ml-2 text-xs text-gray-500">Solar Jobs Platform</span>
               </Link>
             </div>
-            <div className="ml-6 hidden sm:flex sm:space-x-8">
-              {/* Replace Link with NavLink and use className as a function */}
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  isActive
-                    ? "inline-flex items-center border-b-2 border-primary-500 px-1 pt-1 text-sm font-medium text-gray-900"
-                    : "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                }
-                end  // Important for exact matching of the root path
-              >
-                Dashboard
-              </NavLink>
-              <NavLink
-                to="/jobs"
-                className={({ isActive }) =>
-                  isActive
-                    ? "inline-flex items-center border-b-2 border-primary-500 px-1 pt-1 text-sm font-medium text-gray-900"
-                    : "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                }
-                end  // Only match exact /jobs path
-              >
-                Jobs
-              </NavLink>
-              {user?.role === UserRole.COMPANY && (
+            
+            {/* Only show navigation links if authenticated */}
+            {isAuthenticated && (
+              <div className="ml-6 hidden sm:flex sm:space-x-8">
                 <NavLink
-                  to="/jobs/create"
+                  to="/"
                   className={({ isActive }) =>
                     isActive
                       ? "inline-flex items-center border-b-2 border-primary-500 px-1 pt-1 text-sm font-medium text-gray-900"
                       : "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
                   }
+                  end  // Important for exact matching of the root path
                 >
-                  Post Job
+                  Dashboard
                 </NavLink>
-              )}
-            </div>
+                <NavLink
+                  to="/jobs"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "inline-flex items-center border-b-2 border-primary-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                      : "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                  }
+                  end  // Only match exact /jobs path
+                >
+                  Jobs
+                </NavLink>
+                {user?.role === UserRole.COMPANY && (
+                  <NavLink
+                    to="/jobs/create"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "inline-flex items-center border-b-2 border-primary-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                        : "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    }
+                  >
+                    Post Job
+                  </NavLink>
+                )}
+              </div>
+            )}
           </div>
           <div className="flex items-center">
             {isAuthenticated ? (
