@@ -1,6 +1,5 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { UserRole } from '../../types/auth.types';
 import useAuth from '../../hooks/useAuth';
 import JobForm from '../../components/jobs/JobForm';
 

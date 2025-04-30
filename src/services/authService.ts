@@ -45,5 +45,14 @@ export const getStoredToken = (): string | null => {
  */
 export const getStoredUser = (): User | null => {
   const userJson = localStorage.getItem('user');
-  return userJson ? JSON.parse(userJson) : null;
+  if (!userJson) return null;
+  
+  try {
+    return JSON.parse(userJson);
+  } catch (error) {
+    console.error('Failed to parse user data from localStorage', error);
+    // Clear invalid data
+    removeAuthData();
+    return null;
+  }
 };

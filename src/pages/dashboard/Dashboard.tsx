@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { UserRole } from '../../types/auth.types';
 import useAuth from '../../hooks/useAuth';
 import useJobs from '../../hooks/useJobs';
 import Button from '../../components/common/Button';
 import Card, { CardHeader, CardTitle, CardContent } from '../../components/common/Card';
 
 const Dashboard: React.FC = () => {
-  const { user, isCompany, isElectrician } = useAuth();
+  const { user, isCompany } = useAuth();
   const { jobs, isLoading } = useJobs();
 
   return (

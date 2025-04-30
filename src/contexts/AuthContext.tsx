@@ -9,6 +9,7 @@ enum ActionType {
   LOGIN_FAILURE = 'LOGIN_FAILURE',
   LOGOUT = 'LOGOUT',
   RESTORE_AUTH = 'RESTORE_AUTH',
+  AUTH_CHECK_COMPLETE = 'AUTH_CHECK_COMPLETE',
 }
 
 // Define actions
@@ -17,14 +18,15 @@ type Action =
   | { type: ActionType.LOGIN_SUCCESS; payload: { user: User; token: string } }
   | { type: ActionType.LOGIN_FAILURE; payload: string }
   | { type: ActionType.LOGOUT }
-  | { type: ActionType.RESTORE_AUTH; payload: { user: User; token: string } };
+  | { type: ActionType.RESTORE_AUTH; payload: { user: User; token: string } }
+  | { type: ActionType.AUTH_CHECK_COMPLETE };
 
 // Initial state
 const initialState: AuthState = {
   user: null,
   token: null,
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true, // Start with loading true
   error: null,
 };
 
@@ -77,8 +79,14 @@ const authReducer = (state: AuthState, action: Action): AuthState => {
       return {
         ...state,
         isAuthenticated: true,
+        isLoading: false,
         user: action.payload.user,
         token: action.payload.token,
+      };
+    case ActionType.AUTH_CHECK_COMPLETE:
+      return {
+        ...state,
+        isLoading: false,
       };
     default:
       return state;
@@ -91,15 +99,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Restore authentication state from localStorage on mount
   useEffect(() => {
-    const token = authService.getStoredToken();
-    const user = authService.getStoredUser();
+    const checkAuth = async () => {
+      const token = authService.getStoredToken();
+      const user = authService.getStoredUser();
 
-    if (token && user) {
-      dispatch({
-        type: ActionType.RESTORE_AUTH,
-        payload: { user, token },
-      });
-    }
+      if (token && user) {
+        // If we have both token and user, restore auth
+        dispatch({
+          type: ActionType.RESTORE_AUTH,
+          payload: { user, token },
+        });
+      } else {
+        // If no token or user, just mark auth check as complete
+        dispatch({ type: ActionType.AUTH_CHECK_COMPLETE });
+      }
+    };
+
+    checkAuth();
   }, []);
 
   // Login function

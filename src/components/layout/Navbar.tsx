@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { UserRole } from '../../types/auth.types';
 import useAuth from '../../hooks/useAuth';
 
@@ -18,25 +18,40 @@ const Navbar: React.FC = () => {
               </Link>
             </div>
             <div className="ml-6 hidden sm:flex sm:space-x-8">
-              <Link
+              {/* Replace Link with NavLink and use className as a function */}
+              <NavLink
                 to="/"
-                className="inline-flex items-center border-b-2 border-primary-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                className={({ isActive }) =>
+                  isActive
+                    ? "inline-flex items-center border-b-2 border-primary-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                    : "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                }
+                end  // Important for exact matching of the root path
               >
                 Dashboard
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to="/jobs"
-                className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                className={({ isActive }) =>
+                  isActive
+                    ? "inline-flex items-center border-b-2 border-primary-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                    : "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                }
+                end  // Only match exact /jobs path
               >
                 Jobs
-              </Link>
+              </NavLink>
               {user?.role === UserRole.COMPANY && (
-                <Link
+                <NavLink
                   to="/jobs/create"
-                  className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "inline-flex items-center border-b-2 border-primary-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                      : "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                  }
                 >
                   Post Job
-                </Link>
+                </NavLink>
               )}
             </div>
           </div>

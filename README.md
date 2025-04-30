@@ -41,7 +41,7 @@ src/
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/certana-frontend.git
+   git clone https://github.com/devandrii128/certana-frontend.git
    cd certana-frontend
    ```
 
